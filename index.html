@@ -37,7 +37,10 @@
       <label for="textInput">💬 Enter Text (max 50 words)</label>
       <textarea id="textInput" rows="5" placeholder="Type your message here..."></textarea>
 
-      <button onclick="submitText()">🎧 Generate & Download Audio</button>
+      <p id="wordCounter" class="counter">0 / 50 words · 0 characters</p>
+      <p id="wordWarning" class="warning" hidden>⚠️ Please limit your input to 50 words.</p>
+
+      <button id="generateBtn" onclick="submitText()">🎧 Generate & Download Audio</button>
 
       <a id="downloadLink" href="#" download="speech.mp3">⬇️ Download Your Audio</a>
     </div>
