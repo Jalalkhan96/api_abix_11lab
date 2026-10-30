@@ -4,6 +4,38 @@ function countWords(text) {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
+const MAX_WORDS = 50;
+
+// Live character/word counter + 50-word limit warning. Updates on every
+// keystroke so the limit is visible before submit, and disables the
+// Generate button while the text is over the limit.
+function updateWordCounter() {
+  const textInput = document.getElementById('textInput');
+  const counter = document.getElementById('wordCounter');
+  const warning = document.getElementById('wordWarning');
+  const generateBtn = document.getElementById('generateBtn');
+  if (!textInput || !counter) return;
+
+  const text = textInput.value;
+  const wordCount = countWords(text);
+  const charCount = text.length;
+  const overLimit = wordCount > MAX_WORDS;
+
+  counter.textContent = wordCount + ' / ' + MAX_WORDS + ' words · ' + charCount + ' characters';
+  if (overLimit) {
+    counter.classList.add('over-limit');
+  } else {
+    counter.classList.remove('over-limit');
+  }
+  if (warning) {
+    warning.hidden = !overLimit;
+  }
+  if (generateBtn) {
+    generateBtn.disabled = overLimit;
+  }
+  return { wordCount: wordCount, charCount: charCount, overLimit: overLimit };
+}
+
 async function submitText() {
   const text = document.getElementById('textInput').value.trim();
   const wordCount = countWords(text);
@@ -40,6 +72,13 @@ async function submitText() {
   } catch (error) {
     alert("❌ Something went wrong: " + error.message);
   }
+}
+
+// Wire the live counter to the textarea and show the initial count.
+const textInput = document.getElementById('textInput');
+if (textInput) {
+  textInput.addEventListener('input', updateWordCounter);
+  updateWordCounter();
 }
 
 // Make selected voice name appear red after choosing
